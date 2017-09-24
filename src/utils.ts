@@ -115,3 +115,11 @@ export function encodeEntities (text): string {
   }
   return escapeText(text)
 }
+
+// TODO: use extend from nerv.js module
+export function assign (obj, props) {
+  for (const i in props) {
+    obj[i] = props[i]
+  }
+  return obj
+}

@@ -1,6 +1,6 @@
 // tslint:disable-next-line:max-line-length
-import { isVNode, isVText, isWidget, isStateLess, isObject, isString, isNumber, isFunction, isNullOrUndef, isArray, isInvalid } from './is'
-import { encodeEntities, isVoidElements, escapeText, getCssPropertyName, isUnitlessNumber } from './utils'
+import { isVNode, isVText, isWidget, isStateLess, isString, isNumber, isFunction, isNullOrUndef, isArray, isInvalid } from './is'
+import { encodeEntities, isVoidElements, escapeText, getCssPropertyName, isUnitlessNumber, assign } from './utils'
 
 const skipAttributes = {
   ref: true,
@@ -112,5 +112,37 @@ function renderVNodeToString (vnode, parent, context, firstChild) {
       }
     }
     return renderedString
+  } else if (isWidget(vnode)) {
+    const { ComponentType: type } = vnode
+    const instance = new type(props, context)
+    instance._disable = true
+    if (isFunction(instance.getChildContext)) {
+      context = assign(assign({}, context), instance.getChildContext())
+    }
+    instance.context = context
+    if (isFunction(instance.componentWillMount)) {
+      instance.componentWillMount()
+    }
+    const nextVnode = instance.render(props, instance.state, context)
+
+    if (isInvalid(nextVnode)) {
+      return '<!--!-->'
+    }
+    return renderVNodeToString(nextVnode, vnode, context, true)
+  } else if (isStateLess(vnode)) {
+    const nextVnode = tagName(props, context)
+
+    if (isInvalid(nextVnode)) {
+      return '<!--!-->'
+    }
+    return renderVNodeToString(nextVnode, vnode, context, true)
   }
+}
+
+export function renderToString (input: any): string {
+  return renderVNodeToString(input, {}, {}, true) as string
+}
+
+export function renderToStaticMarkup (input: any): string {
+  return renderVNodeToString(input, {}, {}, true) as string
 }
