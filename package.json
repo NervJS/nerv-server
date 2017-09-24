@@ -9,7 +9,9 @@
     "nervjs": "^0.1.10"
   },
   "devDependencies": {
+    "@types/jest": "^21.1.0",
     "@types/node": "^8.0.29",
+    "jest": "^21.1.0",
     "rollup": "^0.50.0",
     "rollup-plugin-typescript2": "^0.5.2",
     "tslint": "^5.7.0",
