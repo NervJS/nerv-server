@@ -106,16 +106,24 @@ describe('render', () => {
       }, {})
     })
 
+  })
+
+  describe('Classical Component', () => {
+
     it('should apply defaultProps', () => {
-      const Test: any = (props) => <div {...props} />
+      class Test extends Component {
+        render () {
+          return <div {...this.props} />
+        }
+      }
       Test.defaultProps = {
         foo: 'default foo',
         bar: 'default bar'
       }
 
       expect(render(<Test />)).toEqual('<div foo="default foo" bar="default bar"></div>')
-      // expect(render(<Test bar='b' />)).toEqual('<div foo="default foo" bar="b"></div>')
-      // expect(render(<Test foo='a' bar='b' />)).toEqual('<div foo="a" bar="b"></div>')
+      expect(render(<Test bar='b' />)).toEqual('<div bar="b" foo="default foo"></div>')
+      expect(render(<Test foo='a' bar='b' />)).toEqual('<div foo="a" bar="b"></div>')
     })
   })
 })
