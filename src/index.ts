@@ -54,7 +54,7 @@ function renderVNodeToString (vnode, parent, context, firstChild) {
         if (prop === 'dangerouslySetInnerHTML') {
           html = value.__html
         } else if (prop === 'style') {
-          renderedString += ` style='${renderStylesToString(value)}"`
+          renderedString += ` style="${renderStylesToString(value)}"`
         } else if (prop === 'class' || prop === 'className') {
           renderedString += ` class="${isString(value) ? value : hashToClassName(value)}"`
         } else if (prop === 'defaultValue') {
