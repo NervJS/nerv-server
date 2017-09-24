@@ -77,7 +77,7 @@ function renderVNodeToString (vnode, parent, context, firstChild) {
       }
     }
     if (isVoidElements[tagName]) {
-      renderedString += `>`
+      renderedString += `/>`
     } else {
       renderedString += `>`
       if (!isInvalid(children)) {
