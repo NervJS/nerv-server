@@ -1,3 +1,4 @@
+// tslint:disable:max-classes-per-file
 import { Component, createElement } from 'nervjs'
 import { renderToString } from '../src'
 const render = renderToString
@@ -110,6 +111,38 @@ describe('render', () => {
 
   describe('Classical Component', () => {
 
+    it('should render classical components', () => {
+      class Test extends Component {
+        render () {
+          const { foo, children } = this.props
+          return <div foo={foo}>{children}</div>
+        }
+      }
+
+      const spy = jest.spyOn(Test.prototype, 'render')
+      const widget = <Test foo='test'>content</Test>
+      const rendered = render(widget)
+      expect(rendered).toEqual(`<div foo="test">content</div>`)
+      expect(spy).toHaveBeenCalledTimes(1)
+    })
+
+    it('should render classical components within JSX', () => {
+      class Test extends Component {
+        render () {
+          const { foo, children } = this.props
+          return <div foo={foo}>{children}</div>
+        }
+      }
+      const spy = jest.spyOn(Test.prototype, 'render')
+      const rendered = render(
+        <section>
+          <Test foo={1}><span>asdf</span></Test>
+        </section>
+      )
+      expect(rendered).toEqual(`<section><div foo="1"><span>asdf</span></div></section>`)
+      expect(spy).toHaveBeenCalledTimes(1)
+    })
+
     it('should apply defaultProps', () => {
       class Test extends Component {
         render () {
@@ -124,6 +157,73 @@ describe('render', () => {
       expect(render(<Test />)).toEqual('<div foo="default foo" bar="default bar"></div>')
       expect(render(<Test bar='b' />)).toEqual('<div bar="b" foo="default foo"></div>')
       expect(render(<Test foo='a' bar='b' />)).toEqual('<div foo="a" bar="b"></div>')
+    })
+
+    it('should invoke componentWillMount', () => {
+      class Test extends Component {
+        // tslint:disable-next-line:no-empty
+        componentWillMount () { }
+        render () {
+          return <div {...this.props} />
+        }
+      }
+      const spy = jest.spyOn(Test.prototype, 'componentWillMount')
+      render(<Test />)
+      expect(spy).toHaveBeenCalledTimes(1)
+    })
+
+    it('should pass context to direct child', () => {
+      const CONTEXT = { a: 'a' }
+      class Outer extends Component {
+        getChildContext () {
+          return CONTEXT
+        }
+        render () {
+          return <div><Inner {...this.props} /></div>
+        }
+      }
+      const outerContextSpy = jest.spyOn(Outer.prototype, 'getChildContext')
+
+      class Inner extends Component {
+        render () {
+          return <div>{this.context && this.context.a}</div>
+        }
+      }
+
+      const rendered = render(<Outer />)
+
+      expect(rendered).toEqual(`<div><div>a</div></div>`)
+      expect(outerContextSpy).toHaveBeenCalledTimes(1)
+    })
+
+    it('should pass context to grandchildren', () => {
+      const CONTEXT = { a: 'a' }
+      class Outer extends Component {
+        getChildContext () {
+          return CONTEXT
+        }
+        render () {
+          return <div><Inner {...this.props} /></div>
+        }
+      }
+      const outerContextSpy = jest.spyOn(Outer.prototype, 'getChildContext')
+
+      class Inner extends Component {
+        render () {
+          return <div><Child /></div>
+        }
+      }
+
+      class Child extends Component {
+        render () {
+          return <div>{this.context && this.context.a}</div>
+        }
+      }
+
+      const rendered = render(<Outer />)
+
+      expect(rendered).toEqual(`<div><div><div>a</div></div></div>`)
+      expect(outerContextSpy).toHaveBeenCalledTimes(1)
     })
   })
 })
