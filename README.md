@@ -11,22 +11,21 @@ npm install --save nerv-server
 ## Usege
 
 ```js
-import { renderToString } from 'nerv-server';
-import { createElement, Component } from 'preact';
+import { renderToString } from 'nerv-server'
+import { createElement, Component } from 'nervjs'
 /** @jsx createElement */
-
 
 const Foo = ({ visbility, children }) => (
 	<div class={{ visbility }}>{ children }</div>
-);
+)
 
 const html = renderToString(
 	<Foo visbility={true}>
 		<span>bar</span>
 	</Foo>
-);
+)
 
-console.log(html);
+console.log(html)
 // <div class="visbility"><span>bar</span></div>
 
 ```
