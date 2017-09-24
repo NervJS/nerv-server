@@ -6,15 +6,32 @@
   "author": "yuche <i@yuche.me>",
   "license": "MIT",
   "dependencies": {
-    "nervjs": "^0.1.10"
+    "ts-jest": "^21.0.1"
+  },
+  "scripts": {
+    "test": "jest"
   },
   "devDependencies": {
     "@types/jest": "^21.1.0",
     "@types/node": "^8.0.29",
     "jest": "^21.1.0",
+    "nervjs": "^0.1.10",
     "rollup": "^0.50.0",
     "rollup-plugin-typescript2": "^0.5.2",
     "tslint": "^5.7.0",
     "typescript": "^2.5.2"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
+    "transform": {
+      "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testMatch": [
+      "**/__tests__/*.(ts|tsx|js)"
+    ]
   }
 }

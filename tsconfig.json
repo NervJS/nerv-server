@@ -13,7 +13,8 @@
     "strictNullChecks": true,
     "sourceMap": true,
     "declaration": true,
-    "declarationDir": "dist"
+    "declarationDir": "dist",
+    "jsxFactory": "createElement"
   },
   "filesGlob": [
     "src/**/*.ts",

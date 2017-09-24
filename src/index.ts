@@ -41,7 +41,7 @@ function renderStylesToString (styles: string | object): string {
 function renderVNodeToString (vnode, parent, context, firstChild) {
   const { tagName, props, children } = vnode
   if (isVText(vnode)) {
-    return encodeEntities(vnode)
+    return encodeEntities(vnode.text)
   } else if (isVNode(vnode)) {
     let renderedString = `<${tagName}`
     let html
@@ -56,7 +56,7 @@ function renderVNodeToString (vnode, parent, context, firstChild) {
         } else if (prop === 'style') {
           renderedString += ` style='${renderStylesToString(value)}"`
         } else if (prop === 'class' || prop === 'className') {
-          renderedString += ` class="${hashToClassName(value)}"`
+          renderedString += ` class="${isString(value) ? value : hashToClassName(value)}"`
         } else if (prop === 'defaultValue') {
           if (!props.value) {
             renderedString += ` value="${escapeText(value)}"`
