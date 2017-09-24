@@ -1,6 +1,24 @@
 // tslint:disable-next-line:max-line-length
-import { isVNode, isVText, isWidget, isStateLess, isString, isNumber, isFunction, isNullOrUndef, isArray, isInvalid } from './is'
-import { encodeEntities, isVoidElements, escapeText, getCssPropertyName, isUnitlessNumber, assign } from './utils'
+import {
+  isVNode,
+  isVText,
+  isWidget,
+  isStateLess,
+  isString,
+  isNumber,
+  isFunction,
+  isNullOrUndef,
+  isArray,
+  isInvalid
+} from './is'
+import {
+  encodeEntities,
+  isVoidElements,
+  escapeText,
+  getCssPropertyName,
+  isUnitlessNumber,
+  assign
+} from './utils'
 
 const skipAttributes = {
   ref: true,

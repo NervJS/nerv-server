@@ -1,15 +1,19 @@
 {
   "name": "nerv-server",
   "version": "0.0.1",
-  "description": "Server rendering for Nerv.js",
-  "main": "dist/nerv.ssr.js",
+  "description": "Server-side rendering for Nerv.js",
   "author": "yuche <i@yuche.me>",
   "license": "MIT",
-  "dependencies": {},
   "scripts": {
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "build": "rollup -c",
+    "prebuild": "rimraf dist/*"
   },
+  "main": "dist/nerv.ssr.js",
+  "module": "dist/nerv.ssr.esm.js",
+  "jsnext:main": "dist/nerv.ssr.esm.js",
+  "types": "dist/index.d.ts",
   "devDependencies": {
     "@types/jest": "^21.1.0",
     "@types/node": "^8.0.29",
